@@ -2905,6 +2905,7 @@ const lang = {
   'bakaGram.AppearanceCaption': 'bakaGram includes changes to default Telegram Web behaviers. Here you can adjest some of bakaGram\'s change.\n**Some changes may require a page refresh to take effect.**',
   'bakaGram.showTightChatList': 'Tight Chat List',
   'bakaGram.disableAutoCloseContextMenu': 'Disable Auto-Close Context Menu',
+  'bakaGram.hideNewMenu': 'Hide "New" Menu in Chat List',
   'bakaGram.aboutTitle': 'About',
   'bakaGram.aboutCaption': 'bakaGram is a fork of [Telegram Web](https://github.com/morethanwords/tweb). \nbakaGram is not affiliated with Telegram.\nYou can view the source code of bakaGram on [GitHub](https://github.com/agoudbg/tweb).'
 };

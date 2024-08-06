@@ -73,6 +73,13 @@ export default class AppBakaGramTab extends SliderSuperTabEventable {
         onChange: (value: boolean) => {
           localStorage.setItem('bakagram_autoCloseContextMenu', (!value).toString());
         }
+      }, {
+        name: 'bakaGram.hideNewMenu',
+        type: 'boolean',
+        value: localStorage.getItem('bakagram_dontHideNewMenu') !== 'true',
+        onChange: (value: boolean) => {
+          localStorage.setItem('bakagram_dontHideNewMenu', (!value).toString());
+        }
       }]
     });
 

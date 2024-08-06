@@ -353,6 +353,11 @@ export class AppSidebarLeft extends SidebarSlider {
     this.newBtnMenu.id = 'new-menu';
     sidebarHeader.nextElementSibling.append(this.newBtnMenu);
 
+    // patch button
+    if(localStorage.getItem('bakagram_dontHideNewMenu') !== 'true') {
+      this.newBtnMenu.style.display = 'none';
+    }
+
     this.updateBtn = document.createElement('div');
     this.updateBtn.className = 'btn-circle rp btn-corner z-depth-1 btn-update is-hidden';
     this.updateBtn.tabIndex = -1;
