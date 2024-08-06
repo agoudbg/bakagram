@@ -700,7 +700,15 @@ ul.chatlist {
     }
   }
 
-  .dialog-subtitle-badge.avatar-badge  {
+  .dialog-subtitle-badge.avatar-badge {
     top: 2.1rem;
+  }
+
+  .row-title-row .peer-title {
+    font-size: var(--font-size-15) !important;
+  }
+
+  .row-subtitle {
+    font-size: var(--font-size-14) !important;
   }
 }
