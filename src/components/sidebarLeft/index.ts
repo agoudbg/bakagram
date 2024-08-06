@@ -166,7 +166,25 @@ export class AppSidebarLeft extends SidebarSlider {
           });
         }, 0);
       }
-    }, btnArchive, {
+    }, btnArchive,
+    localStorage.getItem('bakagram_dontHideNewMenu') !== 'true' ? {
+      icon: 'newchannel',
+      text: 'NewChannel',
+      onClick: () => {
+        this.createTab(AppNewChannelTab).open();
+      }
+    } : undefined,
+    localStorage.getItem('bakagram_dontHideNewMenu') !== 'true' ? {
+      icon: 'newgroup',
+      text: 'NewGroup',
+      onClick: onNewGroupClick
+    } : undefined,
+    localStorage.getItem('bakagram_dontHideNewMenu') !== 'true' ? {
+      icon: 'newprivate',
+      text: 'NewPrivateChat',
+      onClick: onContactsClick
+    } : undefined,
+    {
       icon: 'stories',
       text: 'MyStories.Title',
       onClick: () => {
