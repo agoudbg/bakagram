@@ -60,11 +60,17 @@ export default class AppBakaGramTab extends SliderSuperTabEventable {
       name: 'bakaGram.AppearanceTitle',
       caption: 'bakaGram.AppearanceCaption',
       settings: [{
+        name: 'bakaGram.showTightChatList',
+        type: 'boolean',
+        value: localStorage.getItem('bakagram_doNotShowTightChatlist') !== 'true',
+        onChange: (value: boolean) => {
+          localStorage.setItem('bakagram_doNotShowTightChatlist', (!value).toString());
+        }
+      }, {
         name: 'bakaGram.disableAutoCloseContextMenu',
         type: 'boolean',
         value: localStorage.getItem('bakagram_autoCloseContextMenu') !== 'true',
         onChange: (value: boolean) => {
-          console.log('change auto close to', !value);
           localStorage.setItem('bakagram_autoCloseContextMenu', (!value).toString());
         }
       }]

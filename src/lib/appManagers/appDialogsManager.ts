@@ -380,6 +380,10 @@ export class DialogElement extends Row {
 
     if(avatarSize === 'bigger') {
       this.container.classList.add('row-big');
+      // patch chatlist height/size
+      if(localStorage.getItem('bakagram_doNotShowTightChatlist') !== 'true') {
+        this.container.classList.add('bakagram-tight-chatlist');
+      }
     } else if(avatarSize === 'small') {
       this.container.classList.add('row-small');
     }
