@@ -230,7 +230,6 @@ export default class AppSettingsTab extends SliderSuperTab {
       }),
       this.bakaGramRow = new Row({
         titleLangKey: 'bakaGram.SettingsTitle',
-        titleRightSecondary: i18n('bakaGram.SettingsTitle'),
         icon: 'settings',
         clickable: () => {
           this.slider.createTab(AppBakaGramTab).open();
