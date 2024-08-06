@@ -2898,7 +2898,14 @@ const lang = {
   'Chat.UploadLimit.Text': {
     'one_value': 'Subscribe to [Telegram Premium]() to increase upload speeds %d time.',
     'other_value': 'Subscribe to [Telegram Premium]() to increase upload speeds %d times.'
-  }
+  },
+  'bakaGram':'BAKAGRAM',
+  'bakaGram.SettingsTitle': 'bakaGram Settings',
+  'bakaGram.AppearanceTitle': 'Appearance',
+  'bakaGram.AppearanceCaption': 'bakaGram includes changes to default Telegram Web behaviers. Here you can adjest some of bakaGram\'s change.',
+  'bakaGram.disableAutoCloseContextMenu': 'Disable Auto-Close Context Menu',
+  'bakaGram.aboutTitle': 'About',
+  'bakaGram.aboutCaption': 'bakaGram is a fork of [Telegram Web](https://github.com/morethanwords/tweb). \nbakaGram is not affiliated with Telegram.\nYou can view the source code of bakaGram on [GitHub](https://github.com/agoudbg/tweb).'
 };
 
 export default lang;

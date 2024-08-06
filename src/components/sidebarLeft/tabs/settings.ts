@@ -35,6 +35,7 @@ import apiManagerProxy from '../../../lib/mtproto/mtprotoworker';
 import {createEffect, createRoot} from 'solid-js';
 import useStars from '../../../stores/stars';
 import PopupStars from '../../popups/stars';
+import AppBakaGramTab from './bakaGram';
 
 export default class AppSettingsTab extends SliderSuperTab {
   private buttons: {
@@ -53,6 +54,7 @@ export default class AppSettingsTab extends SliderSuperTab {
 
   private authorizations: Authorization.authorization[];
   private getAuthorizationsPromise: Promise<AccountAuthorizations.accountAuthorizations>;
+  bakaGramRow: Row<any>;
 
   public async init() {
     this.container.classList.add('settings-container');
@@ -223,6 +225,15 @@ export default class AppSettingsTab extends SliderSuperTab {
         icon: 'language',
         clickable: () => {
           this.slider.createTab(AppLanguageTab).open(languageArgs);
+        },
+        listenerSetter: this.listenerSetter
+      }),
+      this.bakaGramRow = new Row({
+        titleLangKey: 'bakaGram.SettingsTitle',
+        titleRightSecondary: i18n('bakaGram.SettingsTitle'),
+        icon: 'settings',
+        clickable: () => {
+          this.slider.createTab(AppBakaGramTab).open();
         },
         listenerSetter: this.listenerSetter
       })

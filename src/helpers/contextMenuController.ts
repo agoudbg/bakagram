@@ -43,7 +43,7 @@ class ContextMenuController extends OverlayClickHandler {
     const diffX = clientX >= rect.right ? clientX - rect.right : rect.left - clientX;
     const diffY = clientY >= rect.bottom ? clientY - rect.bottom : rect.top - clientY;
 
-    if(diffX >= 100 || diffY >= 100) {
+    if(localStorage.getItem('bakagram_autoCloseContextMenu') === 'true' && (diffX >= 100 || diffY >= 100)) {
       this.close();
       // openedMenu.parentElement.click();
     }
