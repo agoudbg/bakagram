@@ -44,6 +44,7 @@ import isWebFileLocation from '../appManagers/utils/webFiles/isWebFileLocation';
 import appManagersManager from '../appManagers/appManagersManager';
 import clamp from '../../helpers/number/clamp';
 import insertInDescendSortedArray from '../../helpers/array/insertInDescendSortedArray';
+import {ActiveAccountNumber} from '../accounts/types';
 
 export type DownloadOptions = {
   dcId: DcId,
@@ -54,7 +55,8 @@ export type DownloadOptions = {
   limitPart?: number,
   queueId?: number,
   onlyCache?: boolean,
-  downloadId?: string
+  downloadId?: string,
+  accountNumber?: ActiveAccountNumber
   // getFileMethod: Parameters<CacheStorageController['getFile']>[1]
 };
 
@@ -107,6 +109,8 @@ export class ApiFileManager extends AppManager {
   private downloadPromises: {
     [fileName: string]: DownloadPromise
   } = {};
+
+  private requestFilePartReferences: Map<ReferenceBytes, Set<CancellablePromise<MyUploadFile>>> = new Map();
 
   // private downloadToDiscPromises: {
   //   [fileName: string]: DownloadPromise
@@ -289,6 +293,15 @@ export class ApiFileManager extends AppManager {
     return canceled;
   }
 
+  public cancelDownloadByReference(reference: ReferenceBytes) {
+    const set = this.requestFilePartReferences.get(reference);
+    if(set) {
+      for(const promise of set) {
+        promise.reject(makeError('DOWNLOAD_CANCELED'));
+      }
+    }
+  }
+
   public requestWebFilePart({
     dcId,
     location,
@@ -380,7 +393,7 @@ export class ApiFileManager extends AppManager {
           // * IMPORTANT: reference can be changed in previous request
           const reference = (location as InputFileLocation.inputDocumentFileLocation).file_reference?.slice();
 
-          const promise = // pause(offset > (100 * 1024 * 1024) ? 10000000 : 0).then(() =>
+          let promise = // pause(10000000).then(() =>
           this.apiManager.invokeApi('upload.getFile', {
             location,
             offset,
@@ -390,6 +403,29 @@ export class ApiFileManager extends AppManager {
             fileDownload: true,
             floodMaxTimeout
           }) as Promise<MyUploadFile>/* ) */;
+
+          // * will handle file deletion from the other side
+          if(reference) {
+            const reference = (location as InputFileLocation.inputDocumentFileLocation).file_reference;
+            const deferred = deferredPromise<Awaited<typeof promise>>();
+            promise.then(deferred.resolve.bind(deferred), deferred.reject.bind(deferred));
+
+            let set = this.requestFilePartReferences.get(reference);
+            if(!set) {
+              this.requestFilePartReferences.set(reference, set = new Set());
+            }
+
+            set.add(deferred);
+
+            deferred.finally(() => {
+              set.delete(deferred);
+              if(!set.size) {
+                this.requestFilePartReferences.delete(reference);
+              }
+            });
+
+            promise = deferred;
+          }
 
           return promise.catch((err: ApiError) => {
             checkCancel?.();

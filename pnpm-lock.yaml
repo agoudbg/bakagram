@@ -38,6 +38,9 @@ importers:
       '@types/chrome':
         specifier: 0.0.183
         version: 0.0.183
+      '@types/dom-webcodecs':
+        specifier: ^0.1.13
+        version: 0.1.13
       '@types/express':
         specifier: ^4.17.21
         version: 4.17.21
@@ -46,16 +49,16 @@ importers:
         version: 1.26.3
       '@typescript-eslint/eslint-plugin':
         specifier: ^5.62.0
-        version: 5.62.0(@typescript-eslint/parser@5.62.0)(eslint@8.56.0)(typescript@4.9.5)
+        version: 5.62.0(@typescript-eslint/parser@5.62.0(eslint@8.56.0)(typescript@4.9.5))(eslint@8.56.0)(typescript@4.9.5)
       '@typescript-eslint/parser':
         specifier: ^5.62.0
         version: 5.62.0(eslint@8.56.0)(typescript@4.9.5)
       '@vitejs/plugin-basic-ssl':
         specifier: ^1.1.0
-        version: 1.1.0(vite@5.2.10)
+        version: 1.1.0(vite@5.2.10(@types/node@20.10.6)(sass@1.69.6))
       autoprefixer:
         specifier: ^10.4.16
-        version: 10.4.16(postcss@8.4.32)
+        version: 10.4.16(postcss@8.4.38)
       big-integer:
         specifier: ^1.6.52
         version: 1.6.52
@@ -77,6 +80,9 @@ importers:
       fast-png:
         specifier: ^6.2.0
         version: 6.2.0
+      hls.js:
+        specifier: ^1.5.18
+        version: 1.5.18
       http-proxy:
         specifier: ^1.18.1
         version: 1.18.1
@@ -89,6 +95,9 @@ importers:
       mime:
         specifier: ^3.0.0
         version: 3.0.0
+      mp4-muxer:
+        specifier: ^5.1.3
+        version: 5.1.3
       node-ssh:
         specifier: ^13.1.0
         version: 13.1.0
@@ -103,7 +112,7 @@ importers:
         version: 1.5.0
       rollup-plugin-visualizer:
         specifier: ^5.12.0
-        version: 5.12.0
+        version: 5.12.0(rollup@4.17.2)
       sass:
         specifier: ^1.69.6
         version: 1.69.6
@@ -118,13 +127,13 @@ importers:
         version: 5.2.10(@types/node@20.10.6)(sass@1.69.6)
       vite-plugin-checker:
         specifier: ^0.6.2
-        version: 0.6.2(eslint@8.56.0)(typescript@4.9.5)(vite@5.2.10)
+        version: 0.6.2(eslint@8.56.0)(optionator@0.9.3)(typescript@4.9.5)(vite@5.2.10(@types/node@20.10.6)(sass@1.69.6))
       vite-plugin-handlebars:
         specifier: ^1.6.0
         version: 1.6.0(sass@1.69.6)
       vite-plugin-solid:
         specifier: ^2.8.0
-        version: 2.8.0(solid-js@1.8.7)(vite@5.2.10)
+        version: 2.8.0(solid-js@1.8.7)(vite@5.2.10(@types/node@20.10.6)(sass@1.69.6))
       vitest:
         specifier: ^0.34.6
         version: 0.34.6(jsdom@22.1.0)(sass@1.69.6)
@@ -1103,6 +1112,9 @@ packages:
   '@types/connect@3.4.38':
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
 
+  '@types/dom-webcodecs@0.1.13':
+    resolution: {integrity: sha512-O5hkiFIcjjszPIYyUSyvScyvrBoV3NOEEZx/pMlsu44TKzWNkLVBBxnxJz42in5n3QIolYOcBYFCPZZ0h8SkwQ==}
+
   '@types/estree@1.0.5':
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
 
@@ -1162,6 +1174,9 @@ packages:
 
   '@types/ssh2@1.11.18':
     resolution: {integrity: sha512-7eH4ppQMFlzvn//zhwD54MWaITR1aSc1oFBye9vb76GZ2Y9PSFYdwVIwOlxRXWs5+1hifntXyt+8a6SUbOD7Hg==}
+
+  '@types/wicg-file-system-access@2020.9.8':
+    resolution: {integrity: sha512-ggMz8nOygG7d/stpH40WVaNvBwuyYLnrg5Mbyf6bmsj/8+gb6Ei4ZZ9/4PNpcPNTT8th9Q8sM8wYmWGjMWLX/A==}
 
   '@typescript-eslint/eslint-plugin@5.62.0':
     resolution: {integrity: sha512-TiZzBSJja/LbhNPvk6yc0JrX9XqhQ0hdh6M2svYfsHGejaKFIAGd9MQ+ERIMzLGlN/kZoYIgdxFV0PuljTKXag==}
@@ -1944,6 +1959,9 @@ packages:
     resolution: {integrity: sha512-vUptKVTpIJhcczKBbgnS+RtcuYMB8+oNzPK2/Hp3hanz8JmpATdmmgLgSaadVREkDm+e2giHwY3ZRkyjSIDDFA==}
     engines: {node: '>= 0.4'}
 
+  hls.js@1.5.18:
+    resolution: {integrity: sha512-znxR+2jecWluu/0KOBqUcvVyAB5tLff10vjMGrpAlz1eFY+ZhF1bY3r82V+Bk7WJdk03iTjtja9KFFz5BrqjSA==}
+
   html-encoding-sniffer@3.0.0:
     resolution: {integrity: sha512-oWv4T4yJ52iKrufjnyZPkrN0CH3QnrUqdB6In1g5Fe1mia8GmF36gnfNySxoZtxD5+NmYw1EElVXiBk93UeskA==}
     engines: {node: '>=12'}
@@ -2196,6 +2214,9 @@ packages:
 
   mlly@1.4.2:
     resolution: {integrity: sha512-i/Ykufi2t1EZ6NaPLdfnZk2AX8cs0d+mTzVKuPfqPKPatxLApaBoxJQ9x1/uckXtrS/U5oisPMDkNs0yQTaBRg==}
+
+  mp4-muxer@5.1.3:
+    resolution: {integrity: sha512-artYS8Y7l9Cgqi1WyoNZtHW+pXOM0Tg75eupENoSEx59hMJlBqXxsTgJQ8T0ycrb6h9lw9iNKVB8cKEn7HjG2A==}
 
   ms@2.0.0:
     resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==}
@@ -4046,6 +4067,8 @@ snapshots:
     dependencies:
       '@types/node': 20.10.6
 
+  '@types/dom-webcodecs@0.1.13': {}
+
   '@types/estree@1.0.5': {}
 
   '@types/express-serve-static-core@4.17.41':
@@ -4111,7 +4134,9 @@ snapshots:
     dependencies:
       '@types/node': 18.19.4
 
-  '@typescript-eslint/eslint-plugin@5.62.0(@typescript-eslint/parser@5.62.0)(eslint@8.56.0)(typescript@4.9.5)':
+  '@types/wicg-file-system-access@2020.9.8': {}
+
+  '@typescript-eslint/eslint-plugin@5.62.0(@typescript-eslint/parser@5.62.0(eslint@8.56.0)(typescript@4.9.5))(eslint@8.56.0)(typescript@4.9.5)':
     dependencies:
       '@eslint-community/regexpp': 4.10.0
       '@typescript-eslint/parser': 5.62.0(eslint@8.56.0)(typescript@4.9.5)
@@ -4125,6 +4150,7 @@ snapshots:
       natural-compare-lite: 1.4.0
       semver: 7.5.4
       tsutils: 3.21.0(typescript@4.9.5)
+    optionalDependencies:
       typescript: 4.9.5
     transitivePeerDependencies:
       - supports-color
@@ -4136,6 +4162,7 @@ snapshots:
       '@typescript-eslint/typescript-estree': 5.62.0(typescript@4.9.5)
       debug: 4.3.4
       eslint: 8.56.0
+    optionalDependencies:
       typescript: 4.9.5
     transitivePeerDependencies:
       - supports-color
@@ -4152,6 +4179,7 @@ snapshots:
       debug: 4.3.4
       eslint: 8.56.0
       tsutils: 3.21.0(typescript@4.9.5)
+    optionalDependencies:
       typescript: 4.9.5
     transitivePeerDependencies:
       - supports-color
@@ -4167,6 +4195,7 @@ snapshots:
       is-glob: 4.0.3
       semver: 7.5.4
       tsutils: 3.21.0(typescript@4.9.5)
+    optionalDependencies:
       typescript: 4.9.5
     transitivePeerDependencies:
       - supports-color
@@ -4193,7 +4222,7 @@ snapshots:
 
   '@ungap/structured-clone@1.2.0': {}
 
-  '@vitejs/plugin-basic-ssl@1.1.0(vite@5.2.10)':
+  '@vitejs/plugin-basic-ssl@1.1.0(vite@5.2.10(@types/node@20.10.6)(sass@1.69.6))':
     dependencies:
       vite: 5.2.10(@types/node@20.10.6)(sass@1.69.6)
 
@@ -4294,14 +4323,14 @@ snapshots:
 
   asynckit@0.4.0: {}
 
-  autoprefixer@10.4.16(postcss@8.4.32):
+  autoprefixer@10.4.16(postcss@8.4.38):
     dependencies:
       browserslist: 4.22.2
       caniuse-lite: 1.0.30001572
       fraction.js: 4.3.7
       normalize-range: 0.1.2
       picocolors: 1.0.0
-      postcss: 8.4.32
+      postcss: 8.4.38
       postcss-value-parser: 4.2.0
 
   babel-plugin-jsx-dom-expressions@0.37.9(@babel/core@7.23.7):
@@ -4976,6 +5005,8 @@ snapshots:
     dependencies:
       function-bind: 1.1.2
 
+  hls.js@1.5.18: {}
+
   html-encoding-sniffer@3.0.0:
     dependencies:
       whatwg-encoding: 2.0.0
@@ -5221,6 +5252,11 @@ snapshots:
       pkg-types: 1.0.3
       ufo: 1.3.2
 
+  mp4-muxer@5.1.3:
+    dependencies:
+      '@types/dom-webcodecs': 0.1.13
+      '@types/wicg-file-system-access': 2020.9.8
+
   ms@2.0.0: {}
 
   ms@2.1.2: {}
@@ -5452,12 +5488,14 @@ snapshots:
     dependencies:
       glob: 7.2.3
 
-  rollup-plugin-visualizer@5.12.0:
+  rollup-plugin-visualizer@5.12.0(rollup@4.17.2):
     dependencies:
       open: 8.4.2
       picomatch: 2.3.1
       source-map: 0.7.4
       yargs: 17.7.2
+    optionalDependencies:
+      rollup: 4.17.2
 
   rollup@2.77.3:
     optionalDependencies:
@@ -5763,14 +5801,13 @@ snapshots:
       - supports-color
       - terser
 
-  vite-plugin-checker@0.6.2(eslint@8.56.0)(typescript@4.9.5)(vite@5.2.10):
+  vite-plugin-checker@0.6.2(eslint@8.56.0)(optionator@0.9.3)(typescript@4.9.5)(vite@5.2.10(@types/node@20.10.6)(sass@1.69.6)):
     dependencies:
       '@babel/code-frame': 7.23.5
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       chokidar: 3.5.3
       commander: 8.3.0
-      eslint: 8.56.0
       fast-glob: 3.3.2
       fs-extra: 11.2.0
       lodash.debounce: 4.0.8
@@ -5779,12 +5816,15 @@ snapshots:
       semver: 7.5.4
       strip-ansi: 6.0.1
       tiny-invariant: 1.3.1
-      typescript: 4.9.5
       vite: 5.2.10(@types/node@20.10.6)(sass@1.69.6)
       vscode-languageclient: 7.0.0
       vscode-languageserver: 7.0.0
       vscode-languageserver-textdocument: 1.0.11
       vscode-uri: 3.0.8
+    optionalDependencies:
+      eslint: 8.56.0
+      optionator: 0.9.3
+      typescript: 4.9.5
 
   vite-plugin-handlebars@1.6.0(sass@1.69.6):
     dependencies:
@@ -5795,7 +5835,7 @@ snapshots:
       - sass
       - stylus
 
-  vite-plugin-solid@2.8.0(solid-js@1.8.7)(vite@5.2.10):
+  vite-plugin-solid@2.8.0(solid-js@1.8.7)(vite@5.2.10(@types/node@20.10.6)(sass@1.69.6)):
     dependencies:
       '@babel/core': 7.23.7
       '@babel/preset-typescript': 7.23.3(@babel/core@7.23.7)
@@ -5805,7 +5845,7 @@ snapshots:
       solid-js: 1.8.7
       solid-refresh: 0.5.3(solid-js@1.8.7)
       vite: 5.2.10(@types/node@20.10.6)(sass@1.69.6)
-      vitefu: 0.2.5(vite@5.2.10)
+      vitefu: 0.2.5(vite@5.2.10(@types/node@20.10.6)(sass@1.69.6))
     transitivePeerDependencies:
       - supports-color
 
@@ -5815,22 +5855,22 @@ snapshots:
       postcss: 8.4.32
       resolve: 1.22.8
       rollup: 2.77.3
-      sass: 1.69.6
     optionalDependencies:
       fsevents: 2.3.3
+      sass: 1.69.6
 
   vite@5.2.10(@types/node@20.10.6)(sass@1.69.6):
     dependencies:
-      '@types/node': 20.10.6
       esbuild: 0.20.2
       postcss: 8.4.38
       rollup: 4.17.2
-      sass: 1.69.6
     optionalDependencies:
+      '@types/node': 20.10.6
       fsevents: 2.3.3
+      sass: 1.69.6
 
-  vitefu@0.2.5(vite@5.2.10):
-    dependencies:
+  vitefu@0.2.5(vite@5.2.10(@types/node@20.10.6)(sass@1.69.6)):
+    optionalDependencies:
       vite: 5.2.10(@types/node@20.10.6)(sass@1.69.6)
 
   vitest@0.34.6(jsdom@22.1.0)(sass@1.69.6):
@@ -5848,7 +5888,6 @@ snapshots:
       cac: 6.7.14
       chai: 4.3.10
       debug: 4.3.4
-      jsdom: 22.1.0
       local-pkg: 0.4.3
       magic-string: 0.30.5
       pathe: 1.1.1
@@ -5860,6 +5899,8 @@ snapshots:
       vite: 5.2.10(@types/node@20.10.6)(sass@1.69.6)
       vite-node: 0.34.6(@types/node@20.10.6)(sass@1.69.6)
       why-is-node-running: 2.2.2
+    optionalDependencies:
+      jsdom: 22.1.0
     transitivePeerDependencies:
       - less
       - lightningcss

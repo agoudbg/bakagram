@@ -172,6 +172,8 @@ export class AppChatsManager extends AppManager {
 
       const changedParticipation = (oldChat as Chat.channel).pFlags.left !== (chat as Chat.channel).pFlags.left;
 
+      const changedProfileSignatures = (oldChat as Chat.channel).pFlags.signature_profiles !== (chat as Chat.channel).pFlags.signature_profiles;
+
       const storiesCallback = this.appStoriesManager.saveApiPeerStories(chat as Chat.channel, oldChat as Chat.channel);
 
       safeReplaceObject(oldChat, chat);
@@ -195,6 +197,13 @@ export class AppChatsManager extends AppManager {
       if(toggledForum) {
         this.rootScope.dispatchEvent('chat_toggle_forum', {chatId: chat.id, enabled: !!(chat as Chat.channel).pFlags.forum});
       }
+
+      if(changedProfileSignatures) {
+        this.apiUpdatesManager.processLocalUpdate({
+          _: 'updateChannelReload',
+          channel_id: chat.id
+        });
+      }
     }
 
     if(this.peersStorage.isPeerNeeded(peerId)) {
@@ -208,7 +217,8 @@ export class AppChatsManager extends AppManager {
     MTProtoMessagePort.getInstance<false>().invokeVoid('mirror', {
       name: 'peers',
       key: '' + chat.id.toPeerId(true),
-      value: chat
+      value: chat,
+      accountNumber: this.getAccountNumber()
     });
   }
 
@@ -803,6 +813,10 @@ export class AppChatsManager extends AppManager {
           sponsoredMessage.photo = this.appPhotosManager.savePhoto(sponsoredMessage.photo);
         }
 
+        if(sponsoredMessage.media) {
+          this.appMessagesManager.saveMessageMedia(sponsoredMessage, undefined);
+        }
+
         // sponsoredMessage.pFlags.can_report = true;
       });
 
@@ -862,7 +876,7 @@ export class AppChatsManager extends AppManager {
 
   public toggleSomething(
     chatId: ChatId,
-    what: 'toggleJoinToSend' | 'toggleJoinRequest' | 'toggleForum' | 'togglePreHistoryHidden' | 'toggleSignatures' | 'toggleAntiSpam' | 'toggleViewForumAsMessages' | 'toggleParticipantsHidden',
+    what: 'toggleJoinToSend' | 'toggleJoinRequest' | 'toggleForum' | 'togglePreHistoryHidden' | 'toggleAntiSpam' | 'toggleViewForumAsMessages' | 'toggleParticipantsHidden',
     enabled: boolean,
     forceInvalidation?: boolean
   ) {
@@ -882,8 +896,12 @@ export class AppChatsManager extends AppManager {
     return this.toggleSomething(id, 'togglePreHistoryHidden', enabled);
   }
 
-  public toggleSignatures(id: ChatId, enabled: boolean) {
-    return this.toggleSomething(id, 'toggleSignatures', enabled);
+  public toggleSignatures(id: ChatId, enabled: boolean, profiles: boolean) {
+    return this.apiManager.invokeApi('channels.toggleSignatures', {
+      channel: this.getChannelInput(id),
+      signatures_enabled: enabled,
+      profiles_enabled: profiles
+    }).then(this.onChatUpdated.bind(this, id));
   }
 
   public toggleNoForwards(id: ChatId, enabled: boolean) {
@@ -1026,6 +1044,17 @@ export class AppChatsManager extends AppManager {
       approved
     }).then((updates) => {
       return this.onChatUpdated(chatId, updates, true);
+    });
+  }
+
+  public getGenericChannelRecommendations() {
+    return this.apiManager.invokeApiSingleProcess({
+      method: 'channels.getChannelRecommendations',
+      params: {},
+      processResult: (messagesChats) => {
+        this.saveApiChats(messagesChats.chats);
+        return messagesChats;
+      }
     });
   }
 
