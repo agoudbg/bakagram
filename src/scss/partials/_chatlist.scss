@@ -681,3 +681,34 @@ ul.chatlist {
     margin-inline-start: .125rem;
   }
 }
+
+// patch chatlist height/size
+
+.chatlist-chat.chatlist-chat-bigger.row-big.bakagram-tight-chatlist {
+  min-height: 3.9rem;
+
+  .avatar-54 {
+    transform: scale(.9);
+  }
+
+  
+  .avatar-stories-svg {
+    transform: scale(.98);
+
+    &+.avatar {
+      transform: scale(.94);
+    }
+  }
+
+  .dialog-subtitle-badge.avatar-badge {
+    top: 2.1rem;
+  }
+
+  .row-title-row .peer-title {
+    font-size: var(--font-size-15) !important;
+  }
+
+  .row-subtitle {
+    font-size: var(--font-size-14) !important;
+  }
+}

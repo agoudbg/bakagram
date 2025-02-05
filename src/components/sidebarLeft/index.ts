@@ -152,6 +152,222 @@ export class AppSidebarLeft extends SidebarSlider {
     this.backBtn = this.sidebarEl.querySelector('.sidebar-back-button') as HTMLButtonElement;
 
     this.toolsBtn = this.createToolsMenu();
+    const btnArchive: typeof menuButtons[0] = {
+      icon: 'archive',
+      text: 'ArchivedChats',
+      onClick: () => {
+        this.createTab(AppArchivedTab).open();
+      },
+      verify: async() => {
+        const folder = await this.managers.dialogsStorage.getFolderDialogs(FOLDER_ID_ARCHIVE, false);
+        const hasArchiveStories = await this.managers.appStoriesManager.hasArchive();
+        return !!folder.length || hasArchiveStories || !(await this.managers.dialogsStorage.isDialogsLoaded(FOLDER_ID_ARCHIVE));
+      }
+    };
+
+    const themeCheckboxField = new CheckboxField({
+      toggle: true,
+      checked: themeController.getTheme().name === 'night'
+    });
+    themeCheckboxField.input.addEventListener('change', () => {
+      const item = findUpClassName(themeCheckboxField.label, 'btn-menu-item');
+      const icon = item.querySelector('.tgico');
+      const rect = icon.getBoundingClientRect();
+      themeController.switchTheme(themeCheckboxField.checked ? 'night' : 'day', {
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height / 2
+      });
+    });
+
+    rootScope.addEventListener('theme_changed', () => {
+      themeCheckboxField.setValueSilently(themeController.getTheme().name === 'night');
+    });
+
+    const menuButtons: (ButtonMenuItemOptions & {verify?: () => boolean | Promise<boolean>})[] = [{
+      icon: 'savedmessages',
+      text: 'SavedMessages',
+      onClick: () => {
+        setTimeout(() => { // menu doesn't close if no timeout (lol)
+          appImManager.setPeer({
+            peerId: appImManager.myId
+          });
+        }, 0);
+      }
+    }, btnArchive,
+    localStorage.getItem('bakagram_dontHideNewMenu') !== 'true' ? {
+      icon: 'newchannel',
+      text: 'NewChannel',
+      onClick: () => {
+        this.createTab(AppNewChannelTab).open();
+      }
+    } : undefined,
+    localStorage.getItem('bakagram_dontHideNewMenu') !== 'true' ? {
+      icon: 'newgroup',
+      text: 'NewGroup',
+      onClick: onNewGroupClick
+    } : undefined,
+    localStorage.getItem('bakagram_dontHideNewMenu') !== 'true' ? {
+      icon: 'newprivate',
+      text: 'NewPrivateChat',
+      onClick: onContactsClick
+    } : undefined,
+    {
+      icon: 'stories',
+      text: 'MyStories.Title',
+      onClick: () => {
+        this.createTab(AppMyStoriesTab).open();
+      },
+      verify: () => !TEST_NO_STORIES
+    }, {
+      icon: 'user',
+      text: 'Contacts',
+      onClick: onContactsClick
+    }, IS_GEOLOCATION_SUPPORTED ? {
+      icon: 'group',
+      text: 'PeopleNearby',
+      onClick: () => {
+        this.createTab(AppPeopleNearbyTab).open();
+      }
+    } : undefined, {
+      icon: 'settings',
+      text: 'Settings',
+      onClick: () => {
+        this.createTab(AppSettingsTab).open();
+      }
+    }, {
+      icon: 'darkmode',
+      text: 'DarkMode',
+      onClick: () => {
+
+      },
+      checkboxField: themeCheckboxField
+    }, {
+      icon: 'animations',
+      text: 'Animations',
+      onClick: () => {
+
+      },
+      checkboxField: new CheckboxField({
+        toggle: true,
+        checked: liteMode.isAvailable('animations'),
+        stateKey: joinDeepPath('settings', 'liteMode', 'animations'),
+        stateValueReverse: true
+      }),
+      verify: () => !liteMode.isEnabled()
+    }, {
+      icon: 'animations',
+      text: 'LiteMode.Title',
+      onClick: () => {
+        this.createTab(AppPowerSavingTab).open();
+      },
+      verify: () => liteMode.isEnabled()
+    }, {
+      icon: 'help',
+      text: 'TelegramFeatures',
+      onClick: () => {
+        const url = I18n.format('TelegramFeaturesUrl', true);
+        appImManager.openUrl(url);
+      }
+    }, {
+      icon: 'bug',
+      text: 'ReportBug',
+      onClick: () => {
+        const a = document.createElement('a');
+        setBlankToAnchor(a);
+        a.href = 'https://bugs.telegram.org/?tag_ids=40&sort=time';
+        document.body.append(a);
+        a.click();
+        setTimeout(() => {
+          a.remove();
+        }, 0);
+      }
+    }, {
+      icon: 'char' as Icon,
+      className: 'a',
+      text: 'ChatList.Menu.SwitchTo.A',
+      onClick: () => {
+        Promise.all([
+          sessionStorage.set({kz_version: 'Z'}),
+          sessionStorage.delete('tgme_sync')
+        ]).then(() => {
+          location.href = 'https://web.telegram.org/a/';
+        });
+      },
+      verify: () => App.isMainDomain
+    }, /* {
+      icon: 'char w',
+      text: 'ChatList.Menu.SwitchTo.Webogram',
+      onClick: () => {
+        sessionStorage.delete('tgme_sync').then(() => {
+          location.href = 'https://web.telegram.org/?legacy=1';
+        });
+      },
+      verify: () => App.isMainDomain
+    }, */ {
+      icon: 'plusround',
+      text: 'PWA.Install',
+      onClick: () => {
+        const installPrompt = getInstallPrompt();
+        installPrompt?.();
+      },
+      verify: () => !!getInstallPrompt()
+    }];
+
+    const filteredButtons = menuButtons.filter(Boolean);
+    const filteredButtonsSliced = filteredButtons.slice();
+    this.toolsBtn = ButtonMenuToggle({
+      direction: 'bottom-right',
+      buttons: filteredButtons,
+      onOpenBefore: async() => {
+        const attachMenuBots = await this.managers.appAttachMenuBotsManager.getAttachMenuBots();
+        const buttons = filteredButtonsSliced.slice();
+        const attachMenuBotsButtons = attachMenuBots.filter((attachMenuBot) => {
+          return attachMenuBot.pFlags.show_in_side_menu;
+        }).map((attachMenuBot) => {
+          const icon = getAttachMenuBotIcon(attachMenuBot);
+          const button: typeof buttons[0] = {
+            regularText: wrapEmojiText(attachMenuBot.short_name),
+            onClick: () => {
+              appImManager.openWebApp({
+                attachMenuBot,
+                botId: attachMenuBot.bot_id,
+                isSimpleWebView: true,
+                fromSideMenu: true
+              });
+            },
+            iconDoc: icon?.icon as MyDocument,
+            new: attachMenuBot.pFlags.side_menu_disclaimer_needed || attachMenuBot.pFlags.inactive
+          };
+
+          return button;
+        });
+
+        buttons.splice(3, 0, ...attachMenuBotsButtons);
+        filteredButtons.splice(0, filteredButtons.length, ...buttons);
+      },
+      onOpen: (e, btnMenu) => {
+        const btnMenuFooter = document.createElement('a');
+        btnMenuFooter.href = 'https://github.com/morethanwords/tweb/blob/master/CHANGELOG.md';
+        setBlankToAnchor(btnMenuFooter);
+        btnMenuFooter.classList.add('btn-menu-footer');
+        btnMenuFooter.addEventListener(CLICK_EVENT_NAME, (e) => {
+          e.stopPropagation();
+          contextMenuController.close();
+        });
+        const t = document.createElement('span');
+        t.classList.add('btn-menu-footer-text');
+        t.textContent = 'Telegram Web' + App.suffix + ' '/* ' alpha ' */ + App.versionFull;
+        btnMenuFooter.append(t);
+        btnMenu.classList.add('has-footer');
+        btnMenu.append(btnMenuFooter);
+
+        const a = btnMenu.querySelector('.a .btn-menu-item-icon');
+        if(a) a.textContent = 'A';
+
+        btnArchive.element?.append(this.archivedCount);
+      },
+      noIcon: true
+    });
     this.toolsBtn.classList.add('sidebar-tools-button', 'is-visible');
     this.totalNotificationsCount = createBadge('span', 20, 'primary');
     this.toolsBtn.append(this.totalNotificationsCount);
@@ -179,6 +395,11 @@ export class AppSidebarLeft extends SidebarSlider {
 
     this.newBtnMenu = this.createNewChatsMenuButton();
     sidebarHeader.nextElementSibling.append(this.newBtnMenu);
+
+    // patch button
+    if(localStorage.getItem('bakagram_dontHideNewMenu') !== 'true') {
+      this.newBtnMenu.style.display = 'none';
+    }
 
     this.updateBtn = document.createElement('div');
     this.updateBtn.className = 'btn-circle rp btn-corner z-depth-1 btn-update is-hidden';

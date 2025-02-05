@@ -68,7 +68,7 @@ class ContextMenuController extends OverlayClickHandler {
     for(const item of allMenus) {
       if(item.triggerElement && !isFartherThan(item.triggerElement, 40)) break;
 
-      if(isFartherThan(item.element, item.level === 0 ? 100 : 40)) {
+      if(localStorage.getItem('bakagram_autoCloseContextMenu') === 'true' && isFartherThan(item.element, item.level === 0 ? 100 : 40)) {
         this.closeAndRemoveMenu(item);
       } else {
         break;
